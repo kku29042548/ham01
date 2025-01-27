@@ -11,9 +11,11 @@ namespace WinFormsApp1
         public Form1()
         {
             InitializeComponent();
+            Console.WriteLine("Form initialized.");
         }
         public double CalculateDrinkTotal(TextBox coffeePriceTextBox, TextBox coffeeAmountTextBox, TextBox teaPriceTextBox, TextBox teaAmountTextBox, CheckBox coffeeCheckBox, CheckBox teaCheckBox)
         {
+            Console.WriteLine("Calculating drink total.");
             string coffeePriceInput = coffeePriceTextBox.Text;
             string coffeeAmountInput = coffeeAmountTextBox.Text;
             string teaPriceInput = teaPriceTextBox.Text;
@@ -30,7 +32,10 @@ namespace WinFormsApp1
                     coffeePrice = int.Parse(coffeePriceInput);
                 coffeeAmount = int.Parse(coffeeAmountInput);
             }
-            catch (FormatException) { }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid coffee input format.");
+            }
             try
             {
                 if (teaCheckBox.Checked)
@@ -39,15 +44,17 @@ namespace WinFormsApp1
             }
             catch (FormatException)
             {
-
+                Console.WriteLine("Invalid tea input format.");
             }
             double coffeeTotal = coffeePrice * coffeeAmount;
             double teaTotal = teaPrice * teaAmount;
             double total = coffeeTotal + teaTotal;
+            Console.WriteLine($"Drink total: {total}");
             return total;
         }
         public double ApplyTotalDiscount(double drinkTotal, double foodTotal)
         {
+            Console.WriteLine("Applying total discount.");
             double discountedTotal = 0;
             if (Discount_All.Checked)
             {
@@ -62,16 +69,19 @@ namespace WinFormsApp1
                 }
                 catch (FormatException)
                 {
+                    Console.WriteLine("Invalid discount input format.");
                     double combinedTotal = drinkTotal + foodTotal;
                     discountedTotal += combinedTotal;
                 }
 
 
             }
+            Console.WriteLine($"Discounted total: {discountedTotal}");
             return discountedTotal;
         }
         public double ApplyDrinkDiscount(double drinkTotal)
         {
+            Console.WriteLine("Applying drink discount.");
             if (Discount_Drink.Checked)
             {
                 double discountValue = 0;
@@ -82,13 +92,18 @@ namespace WinFormsApp1
 
                 }
                 catch (FormatException)
-                { drinkTotal -= (drinkTotal * discountValue / 100); }
+                {
+                    Console.WriteLine("Invalid drink discount input format.");
+                    drinkTotal -= (drinkTotal * discountValue / 100);
+                }
 
             }
+            Console.WriteLine($"Drink total after discount: {drinkTotal}");
             return drinkTotal;
         }
         public double ApplyFoodDiscount(double foodTotal)
         {
+            Console.WriteLine("Applying food discount.");
             if (Discount_Food.Checked)
             {
                 double discountValue = 0;
@@ -100,11 +115,13 @@ namespace WinFormsApp1
                 }
                 catch (FormatException)
                 {
+                    Console.WriteLine("Invalid food discount input format.");
                     foodTotal -= (foodTotal * discountValue / 100);
 
                 }
             }
 
+            Console.WriteLine($"Food total after discount: {foodTotal}");
             return foodTotal;
         }
 
@@ -116,6 +133,7 @@ namespace WinFormsApp1
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Cola checkbox state changed.");
             if (Cola_Check.Checked == false)
             {
                 ColaPrice.Enabled = false;
@@ -136,6 +154,7 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Calculating final total.");
             double drinkTotal = CalculateDrinkTotal(ColaPrice, ColaAmount, WaterPrice, WaterAmount, Cola_Check, water_Check);
             double foodTotal = CalculateDrinkTotal(Canfish_Price, Canfish_Amount, Noondle_price, Noondle_Amount, Canfish_Check, Noondle_Check);
             double finalTotal = 0;
@@ -163,6 +182,7 @@ namespace WinFormsApp1
             {
                 finalTotal += drinkTotal + foodTotal;
             }
+            Console.WriteLine($"Final total: {finalTotal}");
             Total.Text = finalTotal.ToString();
 
 
@@ -171,6 +191,7 @@ namespace WinFormsApp1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Processing payment and calculating change.");
             double total = 0;
             double cash = 0;
             try
@@ -179,14 +200,21 @@ namespace WinFormsApp1
                 cash = double.Parse(Cash.Text);
 
             }
-            catch (FormatException) { }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid cash input format.");
+            }
 
             try
             {
                 total = double.Parse(Total.Text);
             }
-            catch (FormatException) { }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid total input format.");
+            }
             double change = cash - total;
+            Console.WriteLine($"Change calculated: {change}");
             Changebox.Text = change.ToString();
 
             double OneT = 0;
@@ -271,6 +299,7 @@ namespace WinFormsApp1
                     onestang++;
                 }
             }
+            Console.WriteLine("Updating change denominations.");
             OneThousand.Text = OneT.ToString();
             FiveHundred.Text = FiveH.ToString();
             OneHundred.Text = oneH.ToString();
@@ -290,6 +319,7 @@ namespace WinFormsApp1
 
         private void Tea_check_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Water checkbox state changed.");
             if (water_Check.Checked == true)
             {
                 WaterPrice.Enabled = true;
@@ -324,6 +354,7 @@ namespace WinFormsApp1
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Drink discount checkbox state changed.");
             if (Discount_Drink.Checked)
             {
                 Discount_All.Checked = false;
@@ -338,6 +369,7 @@ namespace WinFormsApp1
 
         private void Discount_Food_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Food discount checkbox state changed.");
             if (Discount_Food.Checked)
             {
                 Discount_All.Checked = false;
@@ -352,6 +384,7 @@ namespace WinFormsApp1
 
         private void Discount_All_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("All discount checkbox state changed.");
             if (Discount_All.Checked)
             {
                 Discount_Drink.Checked = false;
@@ -369,6 +402,7 @@ namespace WinFormsApp1
 
         private void Pizza_Check_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Canned fish checkbox state changed.");
             if (Canfish_Check.Checked)
             {
                 Canfish_Price.Enabled = true;
@@ -384,6 +418,7 @@ namespace WinFormsApp1
 
         private void Burger_Check_CheckedChanged(object sender, EventArgs e)
         {
+            Console.WriteLine("Noodle checkbox state changed.");
             if (Noondle_Check.Checked == true)
             {
                 Noondle_price.Enabled = true;
